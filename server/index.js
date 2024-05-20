@@ -1,6 +1,15 @@
 import  Express  from "express";
-
+import { connectToDb } from "./ConnectDb.js";
+import dotenv from 'dotenv'
+import cors from 'cors'
 const app = Express();
+app.use(cors());
+dotenv.config();
+
+connectToDb();
+
+
+
 
 app.get('/',(req, res)=>{
     res.send('This is server message')
