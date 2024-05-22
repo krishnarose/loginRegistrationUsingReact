@@ -1,5 +1,6 @@
 import express from "express";
 import { connectToDb } from "./ConnectDb.js";
+
 import dotenv from "dotenv";
 import cors from "cors";
 import bcrypt from "bcryptjs"; // Import bcryptjs library
@@ -13,6 +14,7 @@ dotenv.config();
 app.use(express.json());
 
 connectToDb();
+
 
 app.get("/", (req, res) => {
   res.send("This is server message");
@@ -136,6 +138,36 @@ app.post('/login',async(req,res)=>{
     res.status(500).json({error: 'Internal server error'})
   }
 })
+
+// Example endpoint to fetch user data
+app.get("/users", async (req, res) => {
+  try {
+    // Query the database to get user data
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+// Route to delete a user by ID
+app.delete('/users/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findByIdAndDelete(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 const PORT = 7000;
 const HOST = "0.0.0.0";

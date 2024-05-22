@@ -41,7 +41,11 @@ const Login = () => {
       setEmail("");
       setPass("");
       navigate("/", { state: { successMessage: resp.data.message } });
-      window.location.reload(); // Force reload to update Nav component
+
+      setTimeout(()=>{
+        window.location.reload(); 
+      },3000)
+     // Force reload to update Nav component
     } catch (error) {
       toast.error(error.response.data.error);
       console.log("Error:", error.response.data.error);

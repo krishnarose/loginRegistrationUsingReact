@@ -8,6 +8,7 @@ import Footer from "./Pages/Footer";
 import RegisterPage from "./Pages/RegisterPage";
 import Page404 from "./Pages/Page404";
 import Login from "./Pages/Login";
+import Display from "./Pages/Display";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/display" element={<Display />} />
+
         </Routes>
         <Footer />
       </BrowserRouter>
