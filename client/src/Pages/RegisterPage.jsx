@@ -8,6 +8,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
+  const navigate = useNavigate();
 
   const sendData = async (e) => {
     e.preventDefault();
@@ -21,6 +22,8 @@ const RegisterPage = () => {
       setEmail("");
       setName("");
       setPass("");
+      navigate("/Login", { state: { successMessage: resp.data.message } });
+
     } catch (error) {
         toast.error(error.response.data.error);
         console.log("Error:", error.response.data.error);
@@ -69,10 +72,10 @@ const RegisterPage = () => {
         </form>
         <p className="text-xl font-semibold">
           If you already have an account, please log in
-          <Link to="">
+          <Link to="/login">
             <span className="text-xl font-semibold text-blue-500"> here</span>
           </Link>
-          .
+          
         </p>
       </div>
     </>
