@@ -1,7 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {Toaster} from "react-hot-toast"
 import Home from "./Pages/Home";
 import Nav from "./Pages/Nav";
 import Footer from "./Pages/Footer";
@@ -13,7 +12,7 @@ import Display from "./Pages/Display";
 function App() {
   return (
     <>
-      <ToastContainer position="top-center" />
+     <Toaster />
       <BrowserRouter>
         <Nav />
         <Routes>

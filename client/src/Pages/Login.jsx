@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [isEmailVerified, setIsEmailVerified] = useState(false); // New state variable
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,16 +35,11 @@ const Login = () => {
     try {
       const resp = await axios.post("http://192.168.0.101:7000/login", { email, pass });
       console.log("Login successful:", resp.data);
-      // Setting local storage
       localStorage.setItem("resp", JSON.stringify(resp.data));
       setEmail("");
       setPass("");
       navigate("/", { state: { successMessage: resp.data.message } });
-
-      setTimeout(()=>{
-        window.location.reload(); 
-      },3000)
-     // Force reload to update Nav component
+      window.location.reload();
     } catch (error) {
       toast.error(error.response.data.error);
       console.log("Error:", error.response.data.error);

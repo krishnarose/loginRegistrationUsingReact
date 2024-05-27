@@ -2,9 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
+import { toast } from "react-hot-toast";
+
 
 const Display = () => {
   const [data, setData] = useState([]);
+
+  const [editUser, setEditUser] = useState(null);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
 
   useEffect(() => {
     const getData = async () => {
@@ -23,8 +29,27 @@ const Display = () => {
     try {
       await axios.delete(`http://192.168.0.101:7000/users/${userId}`);
       setData(data.filter((user) => user._id !== userId));
+      toast.success("User deleted successfully!");
     } catch (err) {
       alert("Failed to delete user");
+    }
+  };
+
+  const updateUser = async (userId) => {
+    try {
+      const response = await axios.put(
+        `http://192.168.0.101:7000/users/${userId}`,
+        { email, name }
+      );
+      // Update the local state to reflect the changes
+      setData(
+        data.map((user) => (user._id === userId ? response.data.user : user))
+      );
+      // Close the modal
+      document.getElementById("my_modal_1").close();
+      toast.success("User updated successfully!");
+    } catch (err) {
+      alert("Failed to update user");
     }
   };
 
@@ -57,9 +82,53 @@ const Display = () => {
                     >
                       <MdDelete />
                     </span>
-                    <span className="text-xl md:text-2xl text-green-500 animate-pulse md:animate-bounce cursor-pointer">
+                    {/* Open the modal using document.getElementById('ID').showModal() method */}
+                    <button
+                      className="text-xl md:text-2xl text-green-500 animate-pulse md:animate-bounce cursor-pointer"
+                      onClick={() => {
+                        setEditUser(user);
+                        setEmail(user.email);
+                        setName(user.name);
+                        document.getElementById("my_modal_1").showModal();
+                      }}
+                    >
                       <CiEdit />
-                    </span>
+                    </button>
+                    <dialog id="my_modal_1" className="modal">
+                      <div className="modal-box">
+                        <h3 className=" text-center font-bold md:text-lg">
+                          Upadate Details
+                        </h3>
+                        <div className="flex flex-col gap-5 mt-5">
+                          <input
+                            type="text"
+                            placeholder="update email id"
+                            className="w-full input input-bordered"
+                            value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          />
+                          <input
+                            type="text"
+                            placeholder="update username"
+                            className="w-full input input-bordered"
+                            value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          />
+                          <button
+                            className="btn bg-sky-400 font-bold hover:bg-sky-600 text-white "
+                             onClick={() => updateUser(editUser._id)}
+                          >
+                            Update details
+                          </button>
+                        </div>
+                        <div className="modal-action">
+                          <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn">Close</button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
                   </td>
                 </tr>
               ))

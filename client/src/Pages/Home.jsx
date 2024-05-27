@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-import useUserData from './useUserData';
+import { toast } from "react-hot-toast";
+
+import useUserData from "./useUserData";
 
 const Home = () => {
   const userData = useUserData();
@@ -11,20 +11,10 @@ const Home = () => {
 
   useEffect(() => {
     if (location.state && location.state.successMessage) {
-      toast.success(location.state.successMessage, {
-        position: "top-center",
-        autoClose: 3000, // Adjust the autoClose time as per your requirement
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toast.success(location.state.successMessage);
       navigate(location.pathname, { replace: true, state: {} });
     }
   }, [location, navigate]);
-
-  
 
   return (
     <>
