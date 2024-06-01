@@ -8,6 +8,7 @@ import RegisterPage from "./Pages/RegisterPage";
 import Page404 from "./Pages/Page404";
 import Login from "./Pages/Login";
 import Display from "./Pages/Display";
+import Dependend from "./Pages/Dependend";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/display" element={<Display />} />
+          <Route path="/dependend" element={< Dependend />} />
 
         </Routes>
         <Footer />

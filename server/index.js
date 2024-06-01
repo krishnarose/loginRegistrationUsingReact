@@ -6,6 +6,7 @@ import cors from "cors";
 import bcrypt from "bcryptjs"; // Import bcryptjs library
 import mongoose, { Schema } from "mongoose";
 import jwt from "jsonwebtoken";
+import routes from './routes.js'; // Import the routes
 
 const app = express();
 app.use(cors());
@@ -18,6 +19,12 @@ connectToDb();
 app.get("/", (req, res) => {
   res.send("This is server message");
 });
+
+// Use the imported routes
+app.use(routes);
+
+
+
 
 //route for getting data from client
 
