@@ -70,9 +70,9 @@ const Login = () => {
         )}
         <button
           type="submit"
-          className="uppercase hover:text-white bg-green-500 w-[100%] py-2 rounded-xl outline-none text-xl font-bold text-slate-150 hover:bg-green-600"
+          className="uppercase text-white bg-green-500 w-[100%] py-2 rounded-xl outline-none text-xl font-bold text-slate-150 hover:bg-green-600"
         >
-          {isEmailVerified ? 'Login' : 'Next-->'}
+          {isEmailVerified ? 'Login' : 'Continue'}
         </button>
       </form>
       <p className="text-xl font-semibold">

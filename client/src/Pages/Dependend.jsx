@@ -12,7 +12,7 @@ const Dependend = () => {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await axios.get("http://localhost:7000/countries");
+        const response = await axios.get("http://192.168.0.101:7000/countries");
         setCountries(response.data);
       } catch (error) {
         console.error("Error fetching countries:", error);
@@ -26,7 +26,7 @@ const Dependend = () => {
     if (selectedCountry) {
       const fetchStates = async () => {
         try {
-          const response = await axios.get("http://localhost:7000/states", {
+          const response = await axios.get("http://192.168.0.101:7000/states", {
             params: { countryCode: selectedCountry },
           });
           setStates(response.data);
@@ -51,8 +51,8 @@ const Dependend = () => {
     if (selectedState) {
       const fetchCities = async () => {
         try {
-          const response = await axios.get("http://localhost:7000/cities", {
-            params: { stateCode: selectedState },
+          const response = await axios.get("http://192.168.0.101:7000/cities", {
+            params: { countryCode: selectedCountry, stateCode: selectedState }, // Include countryCode in params
           });
           setCities(response.data);
           setSelectedCity(""); // Reset selected city
@@ -66,7 +66,7 @@ const Dependend = () => {
       setCities([]);
       setSelectedCity("");
     }
-  }, [selectedState]);
+  }, [selectedState, selectedCountry]); // Include selectedCountry in dependency array
 
   return (
     <div className="p-6 max-w-lg mx-auto">

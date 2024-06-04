@@ -1,3 +1,4 @@
+//index.js
 import express from "express";
 import { connectToDb } from "./ConnectDb.js";
 
@@ -7,6 +8,7 @@ import bcrypt from "bcryptjs"; // Import bcryptjs library
 import mongoose, { Schema } from "mongoose";
 import jwt from "jsonwebtoken";
 import routes from './routes.js'; // Import the routes
+import { Country } from './Location.js'; // Import the Country model
 
 const app = express();
 app.use(cors());
@@ -20,9 +22,54 @@ app.get("/", (req, res) => {
   res.send("This is server message");
 });
 
-// Use the imported routes
-app.use(routes);
+// // Use the imported routes
+// app.use(routes);
 
+// Fetch all countries
+app.get('/countries', async (req, res) => {
+  try {
+    const countries = await Country.find({}, { name: 1, code: 1 });
+    res.status(200).json(countries);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Fetch states by country code
+app.get('/states', async (req, res) => {
+  const { countryCode } = req.query;
+  try {
+    const country = await Country.findOne({ code: countryCode }, { 'states.name': 1, 'states.code': 1 });
+    if (country) {
+      res.status(200).json(country.states);
+    } else {
+      res.status(404).json({ error: 'Country not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Fetch cities by country code and state code
+// Fetch cities by country code and state code
+app.get('/cities', async (req, res) => {
+  const { countryCode, stateCode } = req.query;
+  try {
+    const country = await Country.findOne({ code: countryCode }, { 'states': 1 });
+    if (country) {
+      const state = country.states.find(state => state.code === stateCode);
+      if (state) {
+        res.status(200).json(state.cities);
+      } else {
+        res.status(404).json({ error: 'State not found' });
+      }
+    } else {
+      res.status(404).json({ error: 'Country not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 
 
